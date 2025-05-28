@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Rest Timer</title>
+  <style>
+    body { font-family: sans-serif; text-align: center; margin-top: 100px; }
+    button { font-size: 24px; padding: 20px; }
+    select { font-size: 20px; margin-top: 20px; }
+    #countdown { font-size: 48px; margin: 30px; }
+  </style>
+</head>
+<body>
+  <h1>Rest Timer</h1>
+  <div>
+    <select id="duration">
+      <option value="30">30s</option>
+      <option value="60" selected>1min</option>
+      <option value="90">1min30</option>
+      <option value="120">2min</option>
+      <option value="180">3min</option>
+      <option value="300">5min</option>
+    </select>
+  </div>
+  <div id="countdown">00:00</div>
+  <button onclick="startTimer()">Rest Time</button>
+
+  <audio id="alarm" src="https://actions.google.com/sounds/v1/alarms/alarm_clock.ogg" preload="auto"></audio>
+
+  <script>
+    let timer;
+    function startTimer() {
+      clearInterval(timer);
+      let seconds = parseInt(document.getElementById("duration").value);
+      const display = document.getElementById("countdown");
+      const alarm = document.getElementById("alarm");
+      function update() {
+        let min = Math.floor(seconds / 60);
+        let sec = seconds % 60;
+        display.innerText = `${String(min).padStart(2, '0')}:${String(sec).padStart(2, '0')}`;
+        if (seconds <= 0) {
+          clearInterval(timer);
+          alarm.play();
+        }
+        seconds--;
+      }
+      update();
+      timer = setInterval(update, 1000);
+    }
+  </script>
+</body>
+</html>
